@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:12.0.2
+    container_name: ecommerce_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Matthew22
+      MYSQL_DATABASE: ecommerce_db
+      MYSQL_USER: ecommerce_user
+      MYSQL_PASSWORD: Matthew22
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - ecommerce_network
+
+  web:
+    build: .
+    container_name: ecommerce_web
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/static/images
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DB_HOST=db
+      - DB_NAME=ecommerce_db
+      - DB_USER=ecommerce_user
+      - DB_PASSWORD=Matthew22
+    depends_on:
+      - db
+    networks:
+      - ecommerce_network
+
+volumes:
+  mariadb_data:
+  static_volume:
+  media_volume:
+
+networks:
+  ecommerce_network:
+    driver: bridge

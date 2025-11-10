@@ -1,0 +1,120 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>My Profile</h2>
+            <a href="{% url 'store' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Store
+            </a>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Profile Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="first_name">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="last_name">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" value="{{ user.username }}" disabled>
+                                <small class="form-text text-muted">Username cannot be changed</small>
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone" value="{{ user_profile.phone|default:'' }}">
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label for="address">Address</label>
+                                <textarea class="form-control" id="address" name="address" rows="3">{{ user_profile.address|default:'' }}</textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Update Profile
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Account Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Account Type:</strong> 
+                            <span class="badge badge-{% if user_profile.user_type == 'vendor' %}success{% else %}primary{% endif %}">
+                                {{ user_profile.user_type|title }}
+                            </span>
+                        </p>
+                        <p><strong>Member Since:</strong> {{ user_profile.created_at|date:"M d, Y" }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        
+                        {% if user_profile.user_type == 'vendor' %}
+                        <hr>
+                        <div class="text-center">
+                            <a href="{% url 'vendor_dashboard' %}" class="btn btn-success btn-block">
+                                <i class="fas fa-store"></i> Go to Vendor Dashboard
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0">Security</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Want to change your password?</p>
+                        <a href="{% url 'forgot_password' %}" class="btn btn-warning btn-block">
+                            <i class="fas fa-key"></i> Reset Password
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

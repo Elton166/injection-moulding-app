@@ -1,0 +1,170 @@
+================================================================================
+                    QUICK COMMAND REFERENCE
+================================================================================
+
+GIT COMMANDS
+============
+
+Initialize and Commit:
+---------------------
+git add .
+git commit -m "Initial commit: Django eCommerce Capstone Project"
+
+Create and Push to GitHub:
+--------------------------
+git remote add origin https://github.com/YOUR_USERNAME/ecommerce-capstone-project.git
+git branch -M main
+git push -u origin main
+git push --all origin
+
+Check Status:
+------------
+git status
+git branch -a
+git remote -v
+git log --oneline
+
+================================================================================
+
+DOCKER COMMANDS
+===============
+
+Build and Start:
+---------------
+docker-compose up --build
+
+Start in Background:
+-------------------
+docker-compose up -d
+
+Stop:
+-----
+docker-compose down
+
+View Logs:
+---------
+docker-compose logs -f web
+
+Check Containers:
+----------------
+docker ps
+
+Run Django Commands:
+-------------------
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py migrate
+
+================================================================================
+
+VIRTUAL ENVIRONMENT COMMANDS
+============================
+
+Create venv:
+-----------
+python -m venv venv
+
+Activate venv:
+-------------
+# Windows
+venv\Scripts\activate
+
+# Linux/Mac
+source venv/bin/activate
+
+Install Dependencies:
+--------------------
+pip install -r requirements.txt
+
+Generate requirements.txt:
+-------------------------
+pip freeze > requirements.txt
+
+================================================================================
+
+DJANGO COMMANDS
+===============
+
+Run Migrations:
+--------------
+python manage.py migrate
+
+Create Superuser:
+----------------
+python manage.py createsuperuser
+
+Run Server:
+----------
+python manage.py runserver
+
+Run Tests:
+---------
+python manage.py test
+
+================================================================================
+
+SPHINX DOCUMENTATION
+====================
+
+Generate Documentation:
+----------------------
+cd docs
+sphinx-build -b html . _build/html
+
+View Documentation:
+------------------
+cd docs
+python -m http.server 8080
+# Open http://localhost:8080/_build/html/index.html
+
+================================================================================
+
+SUBMISSION CHECKLIST
+====================
+
+1. Push to GitHub:
+   git add .
+   git commit -m "Final submission"
+   git push origin main
+   git push --all origin
+
+2. Verify GitHub repository is PUBLIC
+
+3. Update capstone.txt with your GitHub URL
+
+4. Upload capstone.txt to HyperionDev
+
+5. Click "Request review"
+
+================================================================================
+
+IMPORTANT URLS
+==============
+
+GitHub Repository: https://github.com/YOUR_USERNAME/ecommerce-capstone-project
+Docker Hub: https://hub.docker.com/r/elton2/ecommerce-web
+Local Application: http://localhost:8000
+Local Documentation: http://localhost:8080/_build/html/index.html
+
+================================================================================
+
+TROUBLESHOOTING
+===============
+
+Git Authentication:
+------------------
+Use Personal Access Token instead of password
+GitHub Settings → Developer settings → Personal access tokens
+
+Docker Build Fails:
+------------------
+docker-compose down
+docker-compose build --no-cache
+docker-compose up
+
+Port Already in Use:
+-------------------
+Change port in docker-compose.yml:
+ports:
+  - "8001:8000"
+
+================================================================================

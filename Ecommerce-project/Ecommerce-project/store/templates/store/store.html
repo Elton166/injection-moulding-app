@@ -1,0 +1,47 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+	<!-- Welcome Banner -->
+	<div class="jumbotron text-center bg-primary text-white mb-4">
+		<h1 class="display-4">Welcome to Our eCommerce Platform</h1>
+		<p class="lead">Your one-stop marketplace for buying and selling products</p>
+		<hr class="my-4 bg-white">
+		<div class="row justify-content-center">
+			<div class="col-md-4 mb-2">
+				<a class="btn btn-success btn-lg btn-block" href="{% url 'register' %}">
+					<strong>Register as Buyer</strong>
+					<br><small>Start shopping today!</small>
+				</a>
+			</div>
+			<div class="col-md-4 mb-2">
+				<a class="btn btn-warning btn-lg btn-block" href="{% url 'register' %}">
+					<strong>Register as Vendor</strong>
+					<br><small>Start selling your products!</small>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<h2 class="text-center mb-4">Featured Products</h2>
+	<div class="row">
+		{% for product in products %}
+		<div class="col-lg-4">
+			<img class="thumbnail" src="{{product.imageURL}}">
+			<div class="box-element product">
+				<h6><strong>{{product.name}}</strong></h6>
+				<hr>
+
+				<div style="display: flex; gap:1em; justify-content: space-between;">
+					<div>
+						<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+						<a class="btn btn-outline-success" href="{% url 'product_detail' product.id %}">View</a>		
+					</div>
+				
+					<h4><strong>R{{product.price}}</strong></h4>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+
+{% endblock content %}

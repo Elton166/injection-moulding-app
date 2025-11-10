@@ -1,0 +1,101 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0">Create New Store</h3>
+            </div>
+            <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="name">Store Name *</label>
+                        <input type="text" name="name" class="form-control" id="name" required 
+                               placeholder="Enter your store name">
+                        <small class="form-text text-muted">Choose a unique and memorable name for your store.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea name="description" class="form-control" id="description" rows="4" required
+                                  placeholder="Describe what your store sells and what makes it special"></textarea>
+                        <small class="form-text text-muted">Tell customers about your store and products.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Address *</label>
+                        <textarea name="address" class="form-control" id="address" rows="3" required
+                                  placeholder="Enter your store's physical address"></textarea>
+                        <small class="form-text text-muted">Provide your store's location for customer reference.</small>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" name="phone" class="form-control" id="phone" required
+                                       placeholder="+1-555-123-4567">
+                                <small class="form-text text-muted">Customer contact number.</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" name="email" class="form-control" id="email" required
+                                       placeholder="store@example.com">
+                                <small class="form-text text-muted">Business email for customer inquiries.</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                                <a href="#" class="text-primary">Privacy Policy</a>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-0">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-store"></i> Create Store
+                        </button>
+                        <a href="{% url 'vendor_dashboard' %}" class="btn btn-secondary btn-lg ml-2">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle"></i> What happens next?</h5>
+                <ul class="mb-0">
+                    <li>Your store will be created and activated immediately</li>
+                    <li>You can start adding products right away</li>
+                    <li>Your store will be visible to customers on the marketplace</li>
+                    <li>You can manage your store from the vendor dashboard</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

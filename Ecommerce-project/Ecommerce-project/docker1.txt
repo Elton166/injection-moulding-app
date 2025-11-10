@@ -1,0 +1,55 @@
+Docker Hub Repository Link
+==========================
+
+Repository: https://hub.docker.com/r/elton2/ecommerce-web
+
+Username: elton2
+Email: eltonoct@gmail.com
+
+---
+
+INSTRUCTIONS TO PUSH IMAGE TO DOCKER HUB:
+=========================================
+
+1. Create the repository on Docker Hub:
+   - Go to https://hub.docker.com/
+   - Login with username: elton2
+   - Click "Create Repository"
+   - Repository name: ecommerce-web
+   - Visibility: Public
+   - Click "Create"
+
+2. Tag the image:
+   docker tag ecommerce-project-web elton2/ecommerce-web:latest
+
+3. Push to Docker Hub:
+   docker push elton2/ecommerce-web:latest
+
+4. Verify:
+   - Go to https://hub.docker.com/r/elton2/ecommerce-web
+   - Image should be visible
+
+---
+
+ALTERNATIVE: Pull and Run Instructions
+======================================
+
+Once pushed, others can pull and run with:
+
+docker pull elton2/ecommerce-web:latest
+docker run -p 8000:8000 elton2/ecommerce-web:latest
+
+---
+
+LOCAL TESTING (No Docker Hub needed):
+=====================================
+
+The application works locally without pushing to Docker Hub:
+
+docker-compose up --build
+
+Access at: http://localhost:8000
+
+---
+
+Repository URL: https://hub.docker.com/r/elton2/ecommerce-web

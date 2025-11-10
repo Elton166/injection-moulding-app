@@ -1,0 +1,133 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Vendor Dashboard</h2>
+            <a href="{% url 'create_store' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Create New Store
+            </a>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if stores %}
+            <div class="row">
+                {% for store in stores %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ store.name }}</h5>
+                                <p class="card-text">{{ store.description|truncatewords:20 }}</p>
+                                <p class="text-muted">
+                                    <small>
+                                        <strong>Address:</strong> {{ store.address|truncatewords:10 }}<br>
+                                        <strong>Phone:</strong> {{ store.phone }}<br>
+                                        <strong>Email:</strong> {{ store.email }}
+                                    </small>
+                                </p>
+                                <div class="mt-auto">
+                                    <a href="{% url 'add_product' %}?store_id={{ store.id }}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-plus"></i> Add Product
+                                    </a>
+                                    <a href="{% url 'edit_store' store.id %}" class="btn btn-warning btn-sm">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                    <a href="{% url 'delete_store' store.id %}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </a>
+                                    <br>
+                                    <span class="badge badge-info mt-2">
+                                        {{ store.product_set.count }} products
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">
+                                    Created: {{ store.created_at|date:"M d, Y" }}
+                                    {% if store.is_active %}
+                                        <span class="badge badge-success ml-2">Active</span>
+                                    {% else %}
+                                        <span class="badge badge-secondary ml-2">Inactive</span>
+                                    {% endif %}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-store fa-5x text-muted"></i>
+                </div>
+                <h4 class="text-muted">No Stores Yet</h4>
+                <p class="text-muted">Create your first store to start selling products!</p>
+                <a href="{% url 'create_store' %}" class="btn btn-success btn-lg">
+                    <i class="fas fa-plus"></i> Create Your First Store
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Store Statistics -->
+{% if stores %}
+<div class="row mt-5">
+    <div class="col-12">
+        <h4>Quick Stats</h4>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h3>{{ stores.count }}</h3>
+                        <p class="mb-0">Total Stores</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h3>
+                            {% for store in stores %}
+                                {{ store.product_set.count|add:0 }}
+                            {% empty %}
+                                0
+                            {% endfor %}
+                        </h3>
+                        <p class="mb-0">Total Products</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-info text-white">
+                    <div class="card-body text-center">
+                        <h3>{{ stores|length }}</h3>
+                        <p class="mb-0">Active Stores</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <h3>API</h3>
+                        <p class="mb-0">Integration Ready</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

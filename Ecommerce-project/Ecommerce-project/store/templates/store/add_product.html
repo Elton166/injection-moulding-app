@@ -1,0 +1,162 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Add Product - eCommerce Platform{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4><i class="fas fa-plus"></i> Add New Product</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_name" class="form-label">Product Name *</label>
+                                <input type="text" class="form-control" id="id_name" name="name" required>
+                                <div class="form-text">Enter a descriptive product name</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_store" class="form-label">Store *</label>
+                                <select class="form-select" id="id_store" name="store" required>
+                                    <option value="">Select a store</option>
+                                    {% for store in user_stores %}
+                                        <option value="{{ store.id }}">{{ store.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {% if not user_stores %}
+                                    <div class="form-text text-warning">
+                                        <i class="fas fa-exclamation-triangle"></i> 
+                                        You need to create a store first. 
+                                        <a href="{% url 'create_store' %}">Create Store</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label">Description *</label>
+                        <textarea class="form-control" id="id_description" name="description" rows="4" required></textarea>
+                        <div class="form-text">Provide a detailed description of your product</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_price" class="form-label">Price (ZAR) *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R</span>
+                                    <input type="number" class="form-control" id="id_price" name="price" step="0.01" min="0" required>
+                                </div>
+                                <div class="form-text">Enter price in South African Rand</div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_stock_quantity" class="form-label">Stock Quantity *</label>
+                                <input type="number" class="form-control" id="id_stock_quantity" name="stock_quantity" min="0" required>
+                                <div class="form-text">Number of items in stock</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_image" class="form-label">Product Image</label>
+                        <input type="file" class="form-control" id="id_image" name="image" accept="image/*">
+                        <div class="form-text">Upload a product image (optional)</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="id_is_active" name="is_active" checked>
+                        <label class="form-check-label" for="id_is_active">
+                            Active (visible to customers)
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'vendor_dashboard' %}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success" {% if not user_stores %}disabled{% endif %}>
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Help Section -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6><i class="fas fa-info-circle"></i> Tips for Adding Products</h6>
+            </div>
+            <div class="card-body">
+                <ul class="mb-0">
+                    <li><strong>Product Name:</strong> Use clear, descriptive names that customers will search for</li>
+                    <li><strong>Description:</strong> Include key features, specifications, and benefits</li>
+                    <li><strong>Pricing:</strong> Research competitor prices and consider your costs</li>
+                    <li><strong>Images:</strong> High-quality images increase sales significantly</li>
+                    <li><strong>Stock:</strong> Keep accurate stock levels to avoid overselling</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation and preview
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const imageInput = document.getElementById('id_image');
+    
+    // Image preview
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // Create or update image preview
+                let preview = document.getElementById('image-preview');
+                if (!preview) {
+                    preview = document.createElement('img');
+                    preview.id = 'image-preview';
+                    preview.className = 'img-thumbnail mt-2';
+                    preview.style.maxWidth = '200px';
+                    imageInput.parentNode.appendChild(preview);
+                }
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        const price = document.getElementById('id_price').value;
+        const stock = document.getElementById('id_stock_quantity').value;
+        
+        if (parseFloat(price) <= 0) {
+            e.preventDefault();
+            alert('Price must be greater than 0');
+            return;
+        }
+        
+        if (parseInt(stock) < 0) {
+            e.preventDefault();
+            alert('Stock quantity cannot be negative');
+            return;
+        }
+    });
+});
+</script>
+{% endblock %}

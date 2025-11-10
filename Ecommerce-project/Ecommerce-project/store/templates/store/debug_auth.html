@@ -1,0 +1,45 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Authentication Debug Page</h2>
+    <hr>
+    
+    <div class="card">
+        <div class="card-body">
+            <h5>Current User Status:</h5>
+            <ul>
+                <li><strong>User:</strong> {{ request.user }}</li>
+                <li><strong>Is Authenticated:</strong> {{ request.user.is_authenticated }}</li>
+                <li><strong>Username:</strong> {{ request.user.username|default:"Not logged in" }}</li>
+                <li><strong>Email:</strong> {{ request.user.email|default:"No email" }}</li>
+                <li><strong>Is Staff:</strong> {{ request.user.is_staff }}</li>
+                <li><strong>Is Superuser:</strong> {{ request.user.is_superuser }}</li>
+            </ul>
+            
+            <hr>
+            
+            <h5>Navigation Test:</h5>
+            {% if request.user.is_authenticated %}
+                <div class="alert alert-success">
+                    <p>✅ User is authenticated - Logout button should be visible</p>
+                    <a href="{% url 'logout' %}" class="btn btn-warning">Test Logout</a>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <p>ℹ️ User is not authenticated - Login button should be visible</p>
+                    <a href="{% url 'login' %}" class="btn btn-warning">Test Login</a>
+                </div>
+            {% endif %}
+            
+            <hr>
+            
+            <h5>Quick Actions:</h5>
+            <a href="{% url 'store' %}" class="btn btn-primary">Back to Store</a>
+            <a href="{% url 'login' %}" class="btn btn-success">Login Page</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger">Direct Logout</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
