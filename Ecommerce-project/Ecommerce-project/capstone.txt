@@ -1,9 +1,9 @@
 GitHub Repository Link
 ======================
 
-Public Repository: https://github.com/Elton2/ecommerce-capstone-project
+Public Repository: https://github.com/Elton166/ecommerce-capstone-project
 
-Username: Elton2
+Username: Elton166
 Project: Django eCommerce Multi-Vendor Platform with Docker
 
 ---
@@ -21,7 +21,7 @@ INSTRUCTIONS TO CREATE AND PUSH TO GITHUB:
 
 2. Push your local repository to GitHub:
    
-   git remote add origin https://github.com/Elton2/ecommerce-capstone-project.git
+   git remote add origin https://github.com/Elton166/ecommerce-capstone-project.git
    git branch -M main
    git push -u origin main
 
@@ -30,12 +30,12 @@ INSTRUCTIONS TO CREATE AND PUSH TO GITHUB:
    git push --all origin
 
 4. Verify on GitHub:
-   - Go to https://github.com/Elton2/ecommerce-capstone-project
+   - Go to https://github.com/Elton166/ecommerce-capstone-project
    - All files should be visible
    - All branches (main, docs, container) should be visible
 
 ---
 
-Repository URL: https://github.com/Elton2/ecommerce-capstone-project
+Repository URL: https://github.com/Elton166/ecommerce-capstone-project
 
-Note: Replace "Elton2" with your actual GitHub username if different.
+

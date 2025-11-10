@@ -2,6 +2,17 @@
 
 A comprehensive multi-vendor eCommerce platform built with Django, featuring REST API, Docker containerization, and complete documentation.
 
+## ⚠️ IMPORTANT: Docker Setup
+
+**This application uses Docker Compose (not just Dockerfile alone).**
+
+To run with Docker, you MUST use:
+```bash
+docker-compose up --build
+```
+
+The Dockerfile alone will not work because the application requires both a web container and a database container working together. Docker Compose orchestrates both containers.
+
 ## 🚀 Features
 
 - **Multi-Vendor System**: Vendors can create stores and manage products

@@ -8,6 +8,27 @@ Email: eltonoct@gmail.com
 
 ---
 
+IMPORTANT: HOW TO RUN THIS APPLICATION
+======================================
+
+This application requires Docker Compose (not just the Docker image alone).
+
+To run the application:
+1. Clone the repository
+2. Navigate to project directory
+3. Run: docker-compose up --build
+4. Access: http://localhost:8000
+
+The docker-compose.yml file orchestrates both the web container (Django)
+and database container (MariaDB) to work together.
+
+Running the Docker image alone will fail with:
+"nc: getaddrinfo for host 'db' port 3306: Name or service not known"
+
+This is expected because the web container needs the database container.
+
+---
+
 INSTRUCTIONS TO PUSH IMAGE TO DOCKER HUB:
 =========================================
 
