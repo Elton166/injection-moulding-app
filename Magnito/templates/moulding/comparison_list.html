@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Comparisons{% endblock %}
+
+{% block content %}
+<h2>Product Comparisons</h2>
+
+<a href="{% url 'product_comparison_create' %}" class="btn btn-warning" style="margin-bottom: 20px;">New Comparison</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Master Sample</th>
+            <th>Machine</th>
+            <th>Operator</th>
+            <th>Similarity</th>
+            <th>Defects</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for comparison in comparisons %}
+        <tr>
+            <td>{{ comparison.master_sample }}</td>
+            <td>{{ comparison.machine_number }}</td>
+            <td>{{ comparison.operator.username }}</td>
+            <td>
+                {% if comparison.similarity_score %}
+                <span class="badge {% if comparison.similarity_score >= 95 %}badge-success{% elif comparison.similarity_score >= 85 %}badge-warning{% else %}badge-danger{% endif %}">
+                    {{ comparison.similarity_score }}%
+                </span>
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if comparison.defects_found %}
+                <span class="badge badge-danger">Yes</span>
+                {% else %}
+                <span class="badge badge-success">No</span>
+                {% endif %}
+            </td>
+            <td>{{ comparison.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                <a href="{% url 'comparison_detail' comparison.pk %}" class="btn" style="padding: 5px 10px; font-size: 12px;">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No comparisons yet</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Schedule Mould Change{% endblock %}
+
+{% block content %}
+<h2>Schedule Mould Change</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+        <div style="color: red;">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn">Schedule Change</button>
+    <a href="{% url 'mould_change_list' %}" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

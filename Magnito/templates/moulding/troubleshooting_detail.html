@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ issue.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ issue.title }}</h2>
+
+<div class="card">
+    <p><strong>Category:</strong> <span class="badge badge-info">{{ issue.get_category_display }}</span></p>
+    
+    <h3>Description</h3>
+    <p>{{ issue.description }}</p>
+    
+    <h3>Symptoms</h3>
+    <p style="white-space: pre-line;">{{ issue.symptoms }}</p>
+    
+    <h3>Solution</h3>
+    <p style="white-space: pre-line; background: #f8f9fa; padding: 15px; border-left: 4px solid #007bff;">{{ issue.solution }}</p>
+    
+    {% if issue.prevention %}
+    <h3>Prevention</h3>
+    <p style="white-space: pre-line;">{{ issue.prevention }}</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'troubleshooting_list' %}" class="btn">Back to List</a>
+{% endblock %}

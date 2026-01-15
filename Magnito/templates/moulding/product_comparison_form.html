@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Compare Product{% endblock %}
+
+{% block content %}
+<h2>Compare Product with Master Sample</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+        <small style="color: #666;">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <div style="color: red;">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-warning">Compare Images</button>
+    <a href="{% url 'comparison_list' %}" class="btn btn-danger">Cancel</a>
+</form>
+
+<div style="margin-top: 30px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+    <h3>Instructions</h3>
+    <ol>
+        <li>Select the master sample to compare against</li>
+        <li>Upload a clear photo of the product</li>
+        <li>Enter the machine number</li>
+        <li>Click "Compare Images" to analyze</li>
+    </ol>
+    <p><strong>Note:</strong> The system will automatically detect defects and provide fix instructions.</p>
+</div>
+{% endblock %}

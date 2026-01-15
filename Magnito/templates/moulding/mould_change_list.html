@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Mould Changes{% endblock %}
+
+{% block content %}
+<h2>Mould Changes</h2>
+
+<a href="{% url 'mould_change_create' %}" class="btn" style="margin-bottom: 20px;">Schedule New Change</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>From Mould</th>
+            <th>To Mould</th>
+            <th>Machine</th>
+            <th>Operator</th>
+            <th>Scheduled</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for change in changes %}
+        <tr>
+            <td>{{ change.mould_from|default:"N/A" }}</td>
+            <td>{{ change.mould_to }}</td>
+            <td>{{ change.machine_number }}</td>
+            <td>{{ change.operator.username }}</td>
+            <td>{{ change.scheduled_time|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if change.status == 'completed' %}
+                <span class="badge badge-success">{{ change.get_status_display }}</span>
+                {% elif change.status == 'in_progress' %}
+                <span class="badge badge-warning">{{ change.get_status_display }}</span>
+                {% elif change.status == 'cancelled' %}
+                <span class="badge badge-danger">{{ change.get_status_display }}</span>
+                {% else %}
+                <span class="badge badge-info">{{ change.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if change.status == 'planned' %}
+                <a href="{% url 'mould_change_update_status' change.pk 'in_progress' %}" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">Start</a>
+                {% elif change.status == 'in_progress' %}
+                <a href="{% url 'mould_change_update_status' change.pk 'completed' %}" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">Complete</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No mould changes scheduled</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

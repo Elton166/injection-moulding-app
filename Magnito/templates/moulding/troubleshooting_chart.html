@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Injection Moulding Troubleshooting Chart{% endblock %}
+
+{% block content %}
+<h2>📊 Injection Moulding Troubleshooting Chart</h2>
+
+<div style="margin: 20px 0;">
+    <a href="{% url 'troubleshooting_list' %}" class="btn">← Back to Troubleshooting</a>
+</div>
+
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+    <h3 style="color: white; margin-bottom: 15px;">🎯 Quick Reference Guide</h3>
+    <p style="margin: 5px 0;">✓ 17 Common Defects with Solutions</p>
+    <p style="margin: 5px 0;">✓ Industry-Standard Troubleshooting Methods</p>
+    <p style="margin: 5px 0;">✓ Machine Parameter Adjustments</p>
+    <p style="margin: 5px 0;">✓ Prevention Strategies</p>
+</div>
+
+<h3 style="margin-top: 40px;">🔍 Filter by Category</h3>
+<div style="display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0;">
+    <a href="?category=quality" class="btn">Quality Issues</a>
+    <a href="?category=machine" class="btn">Machine Issues</a>
+    <a href="?category=material" class="btn">Material Issues</a>
+    <a href="?category=mould" class="btn">Mould Issues</a>
+    <a href="{% url 'troubleshooting_list' %}" class="btn btn-success">Show All</a>
+</div>
+
+<h3 style="margin-top: 40px;">📋 Troubleshooting Issues</h3>
+
+{% for issue in issues %}
+<div class="card" style="margin-bottom: 30px; border-left: 5px solid #667eea;">
+    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+        <h3 style="color: #667eea; margin: 0;">{{ issue.title }}</h3>
+        <span class="badge badge-info">{{ issue.get_category_display }}</span>
+    </div>
+    
+    <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+        <h4 style="color: #667eea; margin-bottom: 10px;">📝 Description</h4>
+        <p>{{ issue.description }}</p>
+    </div>
+    
+    <div style="background: rgba(255, 193, 7, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+        <h4 style="color: #ffc107; margin-bottom: 10px;">👁️ Symptoms</h4>
+        <p style="white-space: pre-line;">{{ issue.symptoms }}</p>
+    </div>
+    
+    <div style="background: rgba(40, 167, 69, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+        <h4 style="color: #28a745; margin-bottom: 10px;">✅ Solution Steps</h4>
+        <p style="white-space: pre-line; font-weight: 500;">{{ issue.solution }}</p>
+    </div>
+    
+    {% if issue.prevention %}
+    <div style="background: rgba(23, 162, 184, 0.1); padding: 15px; border-radius: 10px; margin: 15px 0;">
+        <h4 style="color: #17a2b8; margin-bottom: 10px;">🛡️ Prevention</h4>
+        <p style="white-space: pre-line;">{{ issue.prevention }}</p>
+    </div>
+    {% endif %}
+    
+    <div style="margin-top: 15px;">
+        <a href="{% url 'troubleshooting_detail' issue.pk %}" class="btn">View Full Details →</a>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+@media print {
+    nav, .btn { display: none; }
+    .card { page-break-inside: avoid; }
+}
+</style>
+
+<div style="text-align: center; margin: 40px 0;">
+    <button onclick="window.print()" class="btn btn-success">🖨️ Print Troubleshooting Chart</button>
+</div>
+
+{% endblock %}

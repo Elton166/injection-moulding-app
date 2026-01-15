@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Create Job Card{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <h2>🔧 Create Maintenance Job Card</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<div style="color: red;">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success" style="width: 100%;">✅ Create Job Card</button>
+        <a href="{% url 'job_card_list' %}" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

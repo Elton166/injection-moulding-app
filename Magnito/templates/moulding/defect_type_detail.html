@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ defect.name }}{% endblock %}
+
+{% block content %}
+<h2>{{ defect.name }}</h2>
+
+<div class="card">
+    <h3>Description</h3>
+    <p>{{ defect.description }}</p>
+    
+    <h3>Common Causes</h3>
+    <p style="white-space: pre-line; background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107;">{{ defect.common_causes }}</p>
+    
+    <h3>Fix Instructions</h3>
+    <p style="white-space: pre-line; background: #d1ecf1; padding: 15px; border-left: 4px solid #17a2b8;">{{ defect.fix_instructions }}</p>
+    
+    {% if defect.machine_adjustments %}
+    <h3>Machine Adjustments</h3>
+    <p style="white-space: pre-line; background: #d4edda; padding: 15px; border-left: 4px solid #28a745;">{{ defect.machine_adjustments }}</p>
+    {% endif %}
+</div>
+
+<a href="{% url 'defect_types_list' %}" class="btn">Back to Defect Types</a>
+{% endblock %}

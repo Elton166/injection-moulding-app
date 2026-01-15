@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Hourly Checklist{% endblock %}
+
+{% block content %}
+<h2>Operator Hourly Checklist</h2>
+
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label>{{ form.mould.label }}</label>
+        {{ form.mould }}
+    </div>
+    
+    <div class="form-group">
+        <label>{{ form.machine_number.label }}</label>
+        {{ form.machine_number }}
+    </div>
+    
+    <div class="form-group">
+        <label>{{ form.check_time.label }}</label>
+        {{ form.check_time }}
+    </div>
+    
+    <h3>Quality Checks</h3>
+    <div class="form-group">
+        <label>{{ form.visual_inspection }} {{ form.visual_inspection.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.dimensional_check }} {{ form.dimensional_check.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.color_consistency }} {{ form.color_consistency.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.surface_finish }} {{ form.surface_finish.label }}</label>
+    </div>
+    
+    <h3>Machine Checks</h3>
+    <div class="form-group">
+        <label>{{ form.temperature_ok }} {{ form.temperature_ok.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.pressure_ok }} {{ form.pressure_ok.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.cycle_time_ok }} {{ form.cycle_time_ok.label }}</label>
+    </div>
+    
+    <h3>Material Checks</h3>
+    <div class="form-group">
+        <label>{{ form.material_level_ok }} {{ form.material_level_ok.label }}</label>
+    </div>
+    <div class="form-group">
+        <label>{{ form.material_drying_ok }} {{ form.material_drying_ok.label }}</label>
+    </div>
+    
+    <div class="form-group">
+        <label>{{ form.issues_found }} {{ form.issues_found.label }}</label>
+    </div>
+    
+    <div class="form-group">
+        <label>{{ form.notes.label }}</label>
+        {{ form.notes }}
+    </div>
+    
+    <button type="submit" class="btn btn-success">Submit Checklist</button>
+    <a href="{% url 'checklist_list' %}" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

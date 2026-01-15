@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Hourly Checklists{% endblock %}
+
+{% block content %}
+<h2>Hourly Checklists</h2>
+
+<a href="{% url 'checklist_create' %}" class="btn btn-success" style="margin-bottom: 20px;">New Checklist</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Machine</th>
+            <th>Mould</th>
+            <th>Operator</th>
+            <th>Check Time</th>
+            <th>Quality</th>
+            <th>Machine</th>
+            <th>Material</th>
+            <th>Issues</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for checklist in checklists %}
+        <tr>
+            <td>{{ checklist.machine_number }}</td>
+            <td>{{ checklist.mould }}</td>
+            <td>{{ checklist.operator.username }}</td>
+            <td>{{ checklist.check_time|date:"Y-m-d H:i" }}</td>
+            <td>
+                {% if checklist.visual_inspection and checklist.dimensional_check and checklist.color_consistency and checklist.surface_finish %}
+                <span class="badge badge-success">✓</span>
+                {% else %}
+                <span class="badge badge-warning">⚠</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if checklist.temperature_ok and checklist.pressure_ok and checklist.cycle_time_ok %}
+                <span class="badge badge-success">✓</span>
+                {% else %}
+                <span class="badge badge-warning">⚠</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if checklist.material_level_ok and checklist.material_drying_ok %}
+                <span class="badge badge-success">✓</span>
+                {% else %}
+                <span class="badge badge-warning">⚠</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if checklist.issues_found %}
+                <span class="badge badge-danger">Issues</span>
+                {% else %}
+                <span class="badge badge-success">OK</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No checklists submitted</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

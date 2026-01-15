@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Master Sample{% endblock %}
+
+{% block content %}
+<h2>Upload Master Sample</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+        <small style="color: #666;">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <div style="color: red;">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn">Upload Sample</button>
+    <a href="{% url 'master_sample_list' %}" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

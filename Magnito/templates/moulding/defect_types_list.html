@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Defect Types{% endblock %}
+
+{% block content %}
+<h2>Common Defect Types & Fixes</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;">
+    {% for defect in defects %}
+    <div class="card">
+        <h3>{{ defect.name }}</h3>
+        <p><strong>Description:</strong> {{ defect.description }}</p>
+        <a href="{% url 'defect_type_detail' defect.pk %}" class="btn" style="padding: 5px 10px; font-size: 12px;">View Fix Instructions</a>
+    </div>
+    {% empty %}
+    <p>No defect types defined. Add them in the admin panel.</p>
+    {% endfor %}
+</div>
+{% endblock %}

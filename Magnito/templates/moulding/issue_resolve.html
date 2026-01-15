@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Resolve Issue{% endblock %}
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <h2>✅ Resolve Issue: {{ issue.issue_number }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success" style="width: 100%;">✅ Mark Resolved</button>
+        <a href="{% url 'issue_detail' issue.pk %}" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Start Mould Run{% endblock %}
+
+{% block content %}
+<h2>🚀 Start New Mould Run</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="form-group">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+        <small style="color: #666;">{{ field.help_text }}</small>
+        {% endif %}
+        {% if field.errors %}
+        <div style="color: red;">{{ field.errors }}</div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">🏁 Start Run</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-danger">Cancel</a>
+</form>
+{% endblock %}

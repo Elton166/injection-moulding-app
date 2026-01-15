@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Order {{ order.order_number }}{% endblock %}
+
+{% block content %}
+<h2>📋 Production Order Details</h2>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin: 30px 0;">
+    <div>
+        <div class="card">
+            <h3>Order Information</h3>
+            <p><strong>Order Number:</strong> {{ order.order_number }}</p>
+            <p><strong>Product Name:</strong> {{ order.product_name }}</p>
+            <p><strong>Mould:</strong> {{ order.mould }}</p>
+            <p><strong>Status:</strong> 
+                {% if order.status == 'completed' %}
+                <span class="badge badge-success">{{ order.get_status_display }}</span>
+                {% elif order.status == 'in_progress' %}
+                <span class="badge badge-info">{{ order.get_status_display }}</span>
+                {% else %}
+                <span class="badge badge-warning">{{ order.get_status_display }}</span>
+                {% endif %}
+            </p>
+        </div>
+        
+        <div class="card">
+            <h3>Customer Information</h3>
+            <p><strong>Customer Name:</strong> {{ order.customer_name }}</p>
+            <p><strong>Contact:</strong> {{ order.customer_contact|default:"N/A" }}</p>
+        </div>
+        
+        <div class="card">
+            <h3>Production Details</h3>
+            <p><strong>Quantity Ordered:</strong> {{ order.quantity_ordered }} {{ order.unit }}</p>
+            <p><strong>Quantity Produced:</strong> {{ order.quantity_produced }} {{ order.unit }}</p>
+            <p><strong>Remaining:</strong> {{ order.quantity_remaining }} {{ order.unit }}</p>
+            
+            <div style="margin: 20px 0;">
+                <strong>Progress:</strong>
+                <div style="background: #f0f0f0; border-radius: 10px; height: 30px; position: relative; margin-top: 10px;">
+                    <div style="background: {% if order.progress_percentage >= 100 %}#28a745{% elif order.progress_percentage >= 50 %}#ffc107{% else %}#667eea{% endif %}; height: 100%; width: {{ order.progress_percentage }}%; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        {{ order.progress_percentage }}%
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% if order.special_requirements %}
+        <div class="card" style="border-left: 4px solid #ffc107;">
+            <h3>⚠️ Special Requirements</h3>
+            <p style="white-space: pre-line;">{{ order.special_requirements }}</p>
+        </div>
+        {% endif %}
+        
+        {% if order.notes %}
+        <div class="card">
+            <h3>📝 Notes</h3>
+            <p style="white-space: pre-line;">{{ order.notes }}</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div>
+        <div class="card" style="background: linear-gradient(135deg, {{ order.priority_display_color }} 0%, {{ order.priority_display_color }}dd 100%); color: white;">
+            <h3 style="color: white;">Priority</h3>
+            <p style="font-size: 36px; font-weight: 700;">{{ order.get_priority_display|upper }}</p>
+        </div>
+        
+        <div class="card">
+            <h3>Dates</h3>
+            <p><strong>Order Date:</strong> {{ order.order_date|date:"Y-m-d" }}</p>
+            <p><strong>Due Date:</strong> {{ order.due_date|date:"Y-m-d" }}</p>
+            {% if order.start_date %}
+            <p><strong>Started:</strong> {{ order.start_date|date:"Y-m-d" }}</p>
+            {% endif %}
+            {% if order.completion_date %}
+            <p><strong>Completed:</strong> {{ order.completion_date|date:"Y-m-d" }}</p>
+            {% endif %}
+            
+            {% if order.is_overdue %}
+            <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-top: 15px;">
+                <strong>⚠️ OVERDUE</strong>
+            </div>
+            {% elif order.days_until_due <= 3 and order.status != 'completed' %}
+            <div style="background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin-top: 15px;">
+                <strong>⏰ Due in {{ order.days_until_due }} days</strong>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h3>Actions</h3>
+            {% if order.status == 'pending' %}
+            <a href="{% url 'production_order_update_status' order.pk 'in_progress' %}" class="btn btn-success" style="width: 100%; margin-bottom: 10px;">▶️ Start Production</a>
+            {% elif order.status == 'in_progress' %}
+            <a href="{% url 'production_order_update_status' order.pk 'completed' %}" class="btn btn-success" style="width: 100%; margin-bottom: 10px;">✅ Mark Complete</a>
+            {% endif %}
+            <a href="{% url 'production_order_list' %}" class="btn" style="width: 100%;">← Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

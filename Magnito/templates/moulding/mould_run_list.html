@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Mould Runs{% endblock %}
+
+{% block content %}
+<h2>🏭 Mould Runs</h2>
+
+<a href="{% url 'mould_run_create' %}" class="btn btn-success" style="margin-bottom: 20px;">🚀 Start New Run</a>
+
+<h3>🟢 Active Runs</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Mould</th>
+            <th>Machine</th>
+            <th>Setter Name</th>
+            <th>Start Time</th>
+            <th>Setter Done</th>
+            <th>Duration</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for run in runs %}
+        {% if run.is_active %}
+        <tr>
+            <td><strong>{{ run.mould }}</strong></td>
+            <td>{{ run.machine_number }}</td>
+            <td>👤 {{ run.setter_name }}</td>
+            <td>🕐 {{ run.start_time|date:"Y-m-d H:i" }}</td>
+            <td>✅ {{ run.setter_completion_time|date:"Y-m-d H:i" }}</td>
+            <td>
+                <span class="badge badge-info">{{ run.duration_display }}</span>
+            </td>
+            <td>
+                <a href="{% url 'mould_run_stop' run.pk %}" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">⏹️ Stop</a>
+            </td>
+        </tr>
+        {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="7" style="text-align: center; padding: 30px; color: #999;">
+                <div style="font-size: 48px; margin-bottom: 10px;">🏭</div>
+                No active runs - Start a new mould run!
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 style="margin-top: 40px;">📊 Completed Runs</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Mould</th>
+            <th>Machine</th>
+            <th>Setter Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Duration</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for run in runs %}
+        {% if not run.is_active %}
+        <tr>
+            <td>{{ run.mould }}</td>
+            <td>{{ run.machine_number }}</td>
+            <td>👤 {{ run.setter_name }}</td>
+            <td>{{ run.start_time|date:"Y-m-d H:i" }}</td>
+            <td>{{ run.end_time|date:"Y-m-d H:i" }}</td>
+            <td>{{ run.duration_display }}</td>
+        </tr>
+        {% endif %}
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center; padding: 20px; color: #999;">No completed runs yet</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

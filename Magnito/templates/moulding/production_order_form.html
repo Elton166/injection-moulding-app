@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Production Order{% endblock %}
+
+{% block content %}
+<div style="max-width: 700px; margin: 0 auto;">
+    <h2>📋 Create Production Order</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <h3 style="margin-top: 30px;">Order Information</h3>
+        <div class="form-group">
+            <label>Order Number *</label>
+            {{ form.order_number }}
+            {% if form.order_number.errors %}
+            <div style="color: red;">{{ form.order_number.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Product Name *</label>
+            {{ form.product_name }}
+            {% if form.product_name.errors %}
+            <div style="color: red;">{{ form.product_name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Mould *</label>
+            {{ form.mould }}
+            {% if form.mould.errors %}
+            <div style="color: red;">{{ form.mould.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <h3 style="margin-top: 30px;">Customer Information</h3>
+        <div class="form-group">
+            <label>Customer Name *</label>
+            {{ form.customer_name }}
+            {% if form.customer_name.errors %}
+            <div style="color: red;">{{ form.customer_name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label>Customer Contact</label>
+            {{ form.customer_contact }}
+        </div>
+        
+        <h3 style="margin-top: 30px;">Quantity & Priority</h3>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label>Quantity Ordered *</label>
+                {{ form.quantity_ordered }}
+                {% if form.quantity_ordered.errors %}
+                <div style="color: red;">{{ form.quantity_ordered.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>Unit *</label>
+                {{ form.unit }}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label>Priority *</label>
+            {{ form.priority }}
+            {% if form.priority.errors %}
+            <div style="color: red;">{{ form.priority.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <h3 style="margin-top: 30px;">Dates</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group">
+                <label>Order Date *</label>
+                {{ form.order_date }}
+                {% if form.order_date.errors %}
+                <div style="color: red;">{{ form.order_date.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label>Due Date *</label>
+                {{ form.due_date }}
+                {% if form.due_date.errors %}
+                <div style="color: red;">{{ form.due_date.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <h3 style="margin-top: 30px;">Additional Information</h3>
+        <div class="form-group">
+            <label>Special Requirements</label>
+            {{ form.special_requirements }}
+        </div>
+        
+        <div class="form-group">
+            <label>Notes</label>
+            {{ form.notes }}
+        </div>
+        
+        <button type="submit" class="btn btn-success" style="width: 100%;">✅ Create Order</button>
+        <a href="{% url 'dashboard' %}" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Cancel</a>
+    </form>
+</div>
+{% endblock %}

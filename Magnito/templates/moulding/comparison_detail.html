@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Comparison Results{% endblock %}
+
+{% block content %}
+<h2>Product Comparison Results</h2>
+
+<div class="card">
+    <h3>Comparison Information</h3>
+    <p><strong>Master Sample:</strong> {{ comparison.master_sample }}</p>
+    <p><strong>Machine:</strong> {{ comparison.machine_number }}</p>
+    <p><strong>Operator:</strong> {{ comparison.operator.username }}</p>
+    <p><strong>Date:</strong> {{ comparison.created_at|date:"Y-m-d H:i" }}</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+    <div class="card">
+        <h3>Master Sample</h3>
+        <img src="{{ comparison.master_sample.image.url }}" alt="Master" style="width: 100%; border-radius: 5px;">
+    </div>
+    <div class="card">
+        <h3>Product Sample</h3>
+        <img src="{{ comparison.product_image.url }}" alt="Product" style="width: 100%; border-radius: 5px;">
+    </div>
+</div>
+
+<div class="card">
+    <h3>Analysis Results</h3>
+    {% if comparison.similarity_score %}
+    <div style="margin: 20px 0;">
+        <h4>Similarity Score</h4>
+        <div style="background: #f0f0f0; border-radius: 10px; height: 30px; position: relative;">
+            <div style="background: {% if comparison.similarity_score >= 95 %}#28a745{% elif comparison.similarity_score >= 85 %}#ffc107{% else %}#dc3545{% endif %}; height: 100%; width: {{ comparison.similarity_score }}%; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                {{ comparison.similarity_score }}%
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if comparison.defects_found %}
+    <div style="background: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; margin: 15px 0;">
+        <h4 style="color: #856404;">⚠ Defects Detected</h4>
+        <p style="white-space: pre-line;">{{ comparison.defect_description }}</p>
+    </div>
+    
+    <div style="background: #d1ecf1; padding: 15px; border-left: 4px solid #17a2b8; margin: 15px 0;">
+        <h4 style="color: #0c5460;">🔧 Fix Instructions</h4>
+        <p style="white-space: pre-line;">{{ comparison.fix_instructions }}</p>
+    </div>
+    {% else %}
+    <div style="background: #d4edda; padding: 15px; border-left: 4px solid #28a745; margin: 15px 0;">
+        <h4 style="color: #155724;">✓ Product Approved</h4>
+        <p>Product matches master sample within acceptable tolerances.</p>
+    </div>
+    {% endif %}
+    
+    {% if comparison.notes %}
+    <div style="margin-top: 15px;">
+        <h4>Additional Notes</h4>
+        <p>{{ comparison.notes }}</p>
+    </div>
+    {% endif %}
+</div>
+
+<a href="{% url 'comparison_list' %}" class="btn">Back to Comparisons</a>
+<a href="{% url 'product_comparison_create' %}" class="btn btn-warning">New Comparison</a>
+{% endblock %}

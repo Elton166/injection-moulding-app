@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Production Orders{% endblock %}
+
+{% block content %}
+<h2>📋 Production Orders</h2>
+
+<a href="{% url 'production_order_create' %}" class="btn btn-success" style="margin-bottom: 20px;">➕ New Order</a>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0;">
+    <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Pending</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ pending.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+        <h3 style="color: white;">In Progress</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ in_progress.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Completed</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ completed.count }}</p>
+    </div>
+</div>
+
+<h3>All Orders</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Order #</th>
+            <th>Product</th>
+            <th>Customer</th>
+            <th>Mould</th>
+            <th>Quantity</th>
+            <th>Progress</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td><strong>{{ order.order_number }}</strong></td>
+            <td>{{ order.product_name }}</td>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.mould }}</td>
+            <td>{{ order.quantity_produced }} / {{ order.quantity_ordered }} {{ order.unit }}</td>
+            <td>
+                <div style="background: #f0f0f0; border-radius: 10px; height: 20px; position: relative; width: 100px;">
+                    <div style="background: {% if order.progress_percentage >= 100 %}#28a745{% elif order.progress_percentage >= 50 %}#ffc107{% else %}#667eea{% endif %}; height: 100%; width: {{ order.progress_percentage }}%; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: bold;">
+                        {{ order.progress_percentage }}%
+                    </div>
+                </div>
+            </td>
+            <td>
+                <span class="badge" style="background: {{ order.priority_display_color }}; color: white;">
+                    {{ order.get_priority_display }}
+                </span>
+            </td>
+            <td>
+                {{ order.due_date|date:"Y-m-d" }}
+                {% if order.is_overdue %}
+                <span class="badge badge-danger">OVERDUE</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if order.status == 'completed' %}
+                <span class="badge badge-success">{{ order.get_status_display }}</span>
+                {% elif order.status == 'in_progress' %}
+                <span class="badge badge-info">{{ order.get_status_display }}</span>
+                {% elif order.status == 'cancelled' %}
+                <span class="badge badge-danger">{{ order.get_status_display }}</span>
+                {% else %}
+                <span class="badge badge-warning">{{ order.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'production_order_detail' order.pk %}" class="btn" style="padding: 5px 10px; font-size: 12px;">View</a>
+                {% if order.status == 'pending' %}
+                <a href="{% url 'production_order_update_status' order.pk 'in_progress' %}" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">Start</a>
+                {% elif order.status == 'in_progress' %}
+                <a href="{% url 'production_order_update_status' order.pk 'completed' %}" class="btn btn-success" style="padding: 5px 10px; font-size: 12px;">Complete</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="10" style="text-align: center; padding: 30px; color: #999;">
+                <div style="font-size: 48px; margin-bottom: 10px;">📋</div>
+                No production orders yet
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

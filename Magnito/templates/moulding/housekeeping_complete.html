@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Complete Housekeeping Task{% endblock %}
+
+{% block content %}
+<h2>✅ Complete Housekeeping Task</h2>
+
+<div class="card" style="margin-bottom: 20px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+    <h3>{{ task.task_number }} - {{ task.get_area_type_display }}</h3>
+    <p><strong>Area:</strong> {{ task.area_description }}</p>
+    <p><strong>Started:</strong> {{ task.started_at|date:"Y-m-d H:i" }}</p>
+</div>
+
+<div class="card">
+    <h3>📸 Take After Picture & Complete Task</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">📸 After Picture:</label>
+            {{ form.after_image }}
+            <p style="font-size: 13px; color: #666; margin-top: 5px;">Take a picture after completing cleaning</p>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">After Notes:</label>
+            {{ form.after_notes }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">🧴 Cleaning Products Used:</label>
+            {{ form.cleaning_products_used }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">⚠️ Issues Found (if any):</label>
+            {{ form.issues_found }}
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 30px;">
+            <button type="submit" class="btn btn-success" style="flex: 1;">✅ Complete Task</button>
+            <a href="{% url 'housekeeping_detail' task.pk %}" class="btn" style="flex: 1; text-align: center;">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"], select, textarea, input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+    
+    input[type="text"]:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+</style>
+{% endblock %}

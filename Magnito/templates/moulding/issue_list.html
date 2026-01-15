@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Issues{% endblock %}
+
+{% block content %}
+<h2>⚠️ Issue Management</h2>
+
+<div style="margin: 20px 0;">
+    <a href="{% url 'issue_create' %}" class="btn btn-danger">➕ Report New Issue</a>
+    <a href="{% url 'job_card_list' %}" class="btn">🔧 Maintenance Job Cards</a>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 30px 0;">
+    <div class="card" style="background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Open</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ open_issues.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Resolved</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ resolved_issues.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Customer</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ customer_complaints.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Mould</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ mould_issues.count }}</p>
+    </div>
+    <div class="card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; text-align: center;">
+        <h3 style="color: white;">Machine</h3>
+        <p style="font-size: 36px; font-weight: 700;">{{ machine_issues.count }}</p>
+    </div>
+</div>
+
+<h3>All Issues</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Issue #</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Time Open/Resolved</th>
+            <th>Reported By</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for issue in issues %}
+        <tr>
+            <td><strong>{{ issue.issue_number }}</strong></td>
+            <td>{{ issue.title }}</td>
+            <td><span class="badge badge-info">{{ issue.category.get_category_type_display }}</span></td>
+            <td>
+                <span class="badge" style="background: {{ issue.priority_color }}; color: white;">
+                    {{ issue.get_priority_display }}
+                </span>
+            </td>
+            <td>
+                {% if issue.status == 'resolved' %}
+                <span class="badge badge-success">{{ issue.get_status_display }}</span>
+                {% elif issue.status == 'in_progress' %}
+                <span class="badge badge-warning">{{ issue.get_status_display }}</span>
+                {% elif issue.status == 'closed' %}
+                <span class="badge badge-info">{{ issue.get_status_display }}</span>
+                {% else %}
+                <span class="badge badge-danger">{{ issue.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>{{ issue.time_open }}</td>
+            <td>{{ issue.reported_by.username }}</td>
+            <td>
+                <a href="{% url 'issue_detail' issue.pk %}" class="btn" style="padding: 5px 10px; font-size: 12px;">View</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8" style="text-align: center; padding: 30px; color: #999;">
+                <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
+                No issues reported
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

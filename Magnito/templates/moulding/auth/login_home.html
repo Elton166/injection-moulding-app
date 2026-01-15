@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Injection Moulding System{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 50px auto;">
+    <h2 style="text-align: center; margin-bottom: 40px;">🏭 Welcome to Injection Moulding System</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <!-- Company Login/Register -->
+        <div class="card" style="text-align: center; padding: 40px;">
+            <div style="font-size: 64px; margin-bottom: 20px;">🏢</div>
+            <h3>Company</h3>
+            <p style="color: #666; margin: 20px 0;">Manage your manufacturing operations</p>
+            <a href="{% url 'company_login' %}" class="btn" style="width: 100%; margin-bottom: 10px;">🔐 Company Login</a>
+            <a href="{% url 'company_register' %}" class="btn btn-success" style="width: 100%;">📝 Register Company</a>
+        </div>
+        
+        <!-- Employee Login -->
+        <div class="card" style="text-align: center; padding: 40px;">
+            <div style="font-size: 64px; margin-bottom: 20px;">👥</div>
+            <h3>Employee</h3>
+            <p style="color: #666; margin: 20px 0;">Manager, Supervisor, or Operator</p>
+            <a href="{% url 'user_login' %}" class="btn btn-warning" style="width: 100%;">🔑 Employee Login</a>
+        </div>
+    </div>
+    
+    <div class="card" style="margin-top: 30px; text-align: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h4 style="color: white; margin-bottom: 10px;">✨ Features</h4>
+        <p style="margin: 5px 0;">✓ Mould Run Tracking</p>
+        <p style="margin: 5px 0;">✓ Quality Control & Comparisons</p>
+        <p style="margin: 5px 0;">✓ Troubleshooting System</p>
+        <p style="margin: 5px 0;">✓ Hourly Checklists</p>
+    </div>
+</div>
+{% endblock %}

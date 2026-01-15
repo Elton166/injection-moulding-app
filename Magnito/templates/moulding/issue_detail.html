@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Issue {{ issue.issue_number }}{% endblock %}
+{% block content %}
+<h2>⚠️ Issue Details</h2>
+<div class="card">
+    <h3>{{ issue.title }}</h3>
+    <p><strong>Issue #:</strong> {{ issue.issue_number }}</p>
+    <p><strong>Category:</strong> {{ issue.category }}</p>
+    <p><strong>Priority:</strong> <span class="badge" style="background: {{ issue.priority_color }}; color: white;">{{ issue.get_priority_display }}</span></p>
+    <p><strong>Status:</strong> {{ issue.get_status_display }}</p>
+    <p><strong>Time Open:</strong> {{ issue.time_open }}</p>
+    <p><strong>Description:</strong> {{ issue.description }}</p>
+    {% if issue.resolution %}<p><strong>Resolution:</strong> {{ issue.resolution }}</p>{% endif %}
+</div>
+<a href="{% url 'issue_list' %}" class="btn">← Back</a>
+{% if issue.status == 'in_progress' %}
+<a href="{% url 'issue_resolve' issue.pk %}" class="btn btn-success">✅ Resolve</a>
+{% endif %}
+{% endblock %}
