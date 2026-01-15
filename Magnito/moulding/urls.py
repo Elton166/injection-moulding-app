@@ -3,8 +3,10 @@ from . import views
 from . import views_auth
 
 urlpatterns = [
-    # Dashboard
-    path('', views.dashboard, name='dashboard'),
+    # Root: show login/registration landing page so users must login/register first
+    path('', views_auth.login_home, name='login_home'),
+    # Dashboard moved to /dashboard/ (authenticated users can visit after login)
+    path('dashboard/', views.dashboard, name='dashboard'),
     
     # Mould Changes
     path('mould-changes/', views.mould_change_list, name='mould_change_list'),
@@ -66,7 +68,9 @@ urlpatterns = [
     path('troubleshooting/chart/', views.troubleshooting_chart, name='troubleshooting_chart'),
     
     # Authentication URLs
-    path('auth/', views_auth.login_home, name='login_home'),
+    # keep auth routes, but give the auth root login a different name to avoid
+    # duplicating the root `login_home` name
+    path('auth/', views_auth.login_home, name='login_home_auth'),
     path('auth/company/register/', views_auth.company_register, name='company_register'),
     path('auth/company/login/', views_auth.company_login, name='company_login'),
     path('auth/company/dashboard/', views_auth.company_dashboard, name='company_dashboard'),
