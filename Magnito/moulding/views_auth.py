@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password, check_password
@@ -34,6 +35,9 @@ def company_register(request):
 
 def company_login(request):
     """Company login view"""
+    # preserve next parameter to redirect after successful login
+    next_url = request.POST.get('next') or request.GET.get('next')
+
     if request.method == 'POST':
         form = CompanyLoginForm(request.POST)
         if form.is_valid():
@@ -49,6 +53,9 @@ def company_login(request):
                     request.session['is_company'] = True
                     
                     messages.success(request, f'Welcome back, {company.name}!')
+                    # If a next URL was provided and is safe, redirect there
+                    if next_url and url_has_allowed_host_and_scheme(next_url, {request.get_host()}):
+                        return redirect(next_url)
                     return redirect('company_dashboard')
                 else:
                     messages.error(request, 'Invalid password!')
@@ -56,8 +63,8 @@ def company_login(request):
                 messages.error(request, 'Company not found!')
     else:
         form = CompanyLoginForm()
-    
-    return render(request, 'moulding/auth/company_login.html', {'form': form})
+
+    return render(request, 'moulding/auth/company_login.html', {'form': form, 'next': next_url})
 
 
 def company_dashboard(request):
@@ -126,6 +133,9 @@ def manager_supervisor_register(request):
 
 def user_login(request):
     """Manager/Supervisor/Operator login view"""
+    # preserve next parameter to redirect after successful login
+    next_url = request.POST.get('next') or request.GET.get('next')
+
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -144,6 +154,9 @@ def user_login(request):
                     request.session['company_name'] = profile.company.name
                     
                     messages.success(request, f'Welcome back, {user.get_full_name()}!')
+                    # If a next URL was provided and is safe, redirect there
+                    if next_url and url_has_allowed_host_and_scheme(next_url, {request.get_host()}):
+                        return redirect(next_url)
                     return redirect('dashboard')
                 except UserProfile.DoesNotExist:
                     messages.error(request, 'User profile not found!')
