@@ -18,7 +18,14 @@ import os
 
 
 def dashboard(request):
-    """Main dashboard view"""
+    """Main dashboard view.
+
+    If the user is not authenticated, redirect to the login/registration
+    landing page so registration and login are shown when the app is opened.
+    """
+    if not request.user.is_authenticated:
+        return redirect('login_home')
+
     context = {
         'active_moulds': Mould.objects.filter(is_active=True).count(),
         'pending_changes': MouldChange.objects.filter(status='planned').count(),
