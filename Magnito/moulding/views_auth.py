@@ -169,4 +169,12 @@ def logout_view(request):
 
 def login_home(request):
     """Home page with login options"""
+    # If a Django user is already authenticated, send them to the main dashboard
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    # If a company session exists (company logged in via custom auth), send to company dashboard
+    if request.session.get('company_id'):
+        return redirect('company_dashboard')
+
     return render(request, 'moulding/auth/login_home.html')
