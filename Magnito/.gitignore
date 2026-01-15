@@ -1,3 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+venv.bak/
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Archives and large binary blobs (ignore future adds)
+*.zip
+*.7z
+*.rar
+*.tar.gz
+*.tgz
+
+# Common binary formats
+*.exe
+*.dll
+*.so
+
+# Python test / coverage
+.pytest_cache/
+.coverage
+coverage.xml
+
+# Editor directories and files
+.idea/
+.ropeproject
+
+# Node
+node_modules/
+
+# secrets
+.env
+.venv
+.env.*
 *.pyc
 __pycache__/
 db.sqlite3
